@@ -116,13 +116,13 @@ private:
   bool thread_alive;
   
 #ifdef USE_BOOST
-  boost::thread recv_thread;
+  boost::thread* recv_thread;
 #else
   //std::mutex connect_mutex;
   //std::mutex send_data_mutex;
   //std::mutex send_msg_mutex;
   //socket recv thread
-  std::thread recv_thread;
+  std::thread* recv_thread;
 #endif
   
   int  connectWithTimeout(int sock, const char* ip, const char* port);

@@ -36,7 +36,8 @@ TmCommunication::TmCommunication(std::condition_variable& data_condv,
 #endif
 sockfd(-1),
 optflag(1),
-thread_alive(false)
+thread_alive(false),
+recv_thread(nullptr)
 {
   print_debug("TM_COM: TMCommunication CONstructor");
   //RobotState = new TmRobotState(data_condv);
@@ -88,9 +89,9 @@ bool TmCommunication::start() {
   if (ret) {
     thread_alive = true;
 #ifdef USE_BOOST
-    recv_thread = boost::thread(boost::bind(&TmCommunication::threadFunction, this));
+    recv_thread = new boost::thread(boost::bind(&TmCommunication::threadFunction, this));
 #else
-    recv_thread = std::thread(&TmCommunication::threadFunction, this);
+    recv_thread = new std::thread(&TmCommunication::threadFunction, this);
 #endif
   }
   return ret;
@@ -98,8 +99,9 @@ bool TmCommunication::start() {
 
 void TmCommunication::halt() {
   thread_alive = false;
-  if (recv_thread.joinable()) {
-    recv_thread.join();
+  if (recv_thread != nullptr && recv_thread->joinable()) {
+    recv_thread->join();
+    delete recv_thread;
     printf("[ info] TM_COM: halt\n");
   }
 }
