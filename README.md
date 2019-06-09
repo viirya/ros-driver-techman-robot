@@ -58,7 +58,7 @@ Build a docker image to test the packages.
 
     docker build . -t ros-tm-700 --rm
 
-Running the docker container will launch x11vnc and provide noVNC connection to the Linux desktop in the container.
+This docker image is for Mac. Because GLX support of X11 on Mac isn't good enough, running the docker container will launch x11vnc and provide noVNC connection to the Linux desktop in the container. For Linux development, x11vnc and noVNC are not necessary and can be removed.
 
 Build the ROS packages:
 
