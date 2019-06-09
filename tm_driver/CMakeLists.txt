@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(tm_driver)
 
+add_compile_options(-std=c++11)
+
 set(BOOST_FLAG TRUE)
 
 add_definitions( -DROS_BUILD )
