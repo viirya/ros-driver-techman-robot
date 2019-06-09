@@ -1,8 +1,6 @@
 # ROS driver for Techman robot
 
-A driver provides ROS support for techman robots. TM5_700 is available for ROS Indigo.
-
-TM5_700 is also available for ROS Kinetic. It is now in a branch and under test.
+A driver provides ROS support for techman robots. TM5_700 is available for ROS Kinetic.
 
 This is originally forked from [techman_robot](https://github.com/kentsai0319/techman_robot). Because looks like that repo isn't actively maintained, this repo copies that repo and does some development here.
 
