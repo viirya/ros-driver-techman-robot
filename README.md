@@ -50,3 +50,17 @@ To bring up moveit environment and connect to real robot, run:
 ## Usage with Gazebo
 To bring up the simulated robot in Gazebo, run:  
 ```roslaunch tm_gazebo tm700.launch```
+
+
+## Docker
+
+Build a docker image to test the packages.
+
+    docker build . -t ros-tm-700 --rm
+
+Running the docker container will launch x11vnc and provide noVNC connection to the Linux desktop in the container.
+
+Build the ROS packages:
+
+    source /opt/ros/kinetic/setup.bash && cd /root/catkin_ws && catkin_make
+
