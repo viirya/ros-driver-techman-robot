@@ -12,7 +12,7 @@ RUN rm /etc/apt/sources.list.d/arc-theme.list
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     ros-kinetic-moveit ros-kinetic-gazebo-dev ros-kinetic-gazebo-msgs ros-kinetic-gazebo-plugins ros-kinetic-ros-controllers \
-    ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-pkgs \
+    ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-pkgs ros-kinetic-industrial-robot-simulator \
     && rm -rf /var/lib/apt/lists/*
 
 RUN cd /root && mkdir -p catkin_ws/src
