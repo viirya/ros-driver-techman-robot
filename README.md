@@ -34,18 +34,12 @@ To bring up moveit environment in simulation mode, run:
 
 ### run with real robot:
 
-set up networking:
+For TM5-700 as an example, the robotic arm runs Windows OS. By default, it enables DHCP to obtain IP automatically. You can either use the dynamic IP, or set up a static Intranet IP like 192.168.x.x on the robot. Make sure you can ping the robot at the IP.
 
-1. Click on the network settings (double-arrow in the title bar) and select *Edit Connections*
-2. Locate the new connection (mine was *Wired Connection 1*) and select *Edit*. Under the IPv4 tab, set:
-    * address = 192.168.0.11 (or similar)
-    * netmask = 255.255.255.0
-3. Connect an ethernet cable and try to ping your connected robot:
-    * ```ping 192.168.0.10```
+The firewall setting on Windows can interfere with robot connection. If experiencing with connection problem, check with firewall setting of Windows.
 
 To bring up moveit environment and connect to real robot, run:  
-```roslaunch tm700_moveit_config tm700_moveit_planning_execution.launch sim:=False robot_ip:=192.168.0.10```
-
+```roslaunch tm700_moveit_config tm700_moveit_planning_execution.launch sim:=False robot_ip:=<robot ip>```
 
 ## Usage with Gazebo
 To bring up the simulated robot in Gazebo, run:  
@@ -54,7 +48,7 @@ To bring up the simulated robot in Gazebo, run:
 
 ## Docker
 
-Build a docker image to test the packages.
+Build a docker image to test the robot:
 
     docker build . -t ros-tm-700 --rm
 
@@ -70,3 +64,4 @@ Build the ROS packages:
 
     source /opt/ros/kinetic/setup.bash && cd /root/catkin_ws && catkin_make
 
+There might be an issue like library inconsistency, so it might need to update packages like `apt-get update`.
