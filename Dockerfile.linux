@@ -1,0 +1,95 @@
+FROM ubuntu:16.04
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# built-in packages
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends software-properties-common curl \
+    && add-apt-repository ppa:fcwu-tw/ppa \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends --allow-unauthenticated \
+        openssh-server sudo vim-tiny \
+        net-tools \
+        lxde \
+        gtk2-engines-murrine ttf-ubuntu-font-family \
+        firefox \
+        python-pip python-dev build-essential \
+        mesa-utils libgl1-mesa-dri \
+        gnome-themes-standard gtk2-engines-pixbuf gtk2-engines-murrine pinta \
+        dbus-x11 x11-utils \
+        terminator \
+    && apt-get autoclean \
+    && apt-get autoremove \
+    && rm -rf /var/lib/apt/lists/*
+
+# =================================
+# install ros (source: https://github.com/osrf/docker_images/blob/5399f380af0a7735405a4b6a07c6c40b867563bd/ros/kinetic/ubuntu/xenial/ros-core/Dockerfile)
+# install packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    dirmngr \
+    gnupg2 \
+    && rm -rf /var/lib/apt/lists/*
+
+# setup keys and ROS repos
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros-latest.list
+
+# install bootstrap tools
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    python-rosdep \
+    python-rosinstall \
+    python-vcstools \
+    && rm -rf /var/lib/apt/lists/*
+
+# setup environment
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+# bootstrap rosdep
+RUN rosdep init \
+    && rosdep update
+
+# install ros packages
+ENV ROS_DISTRO kinetic
+RUN apt-get update && apt-get install -y \
+    ros-kinetic-desktop-full \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    ros-kinetic-moveit ros-kinetic-gazebo-dev ros-kinetic-gazebo-msgs ros-kinetic-gazebo-plugins ros-kinetic-ros-controllers \
+    ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-pkgs ros-kinetic-industrial-robot-simulator \
+    && rm -rf /var/lib/apt/lists/*
+
+# =================================
+
+# user tools
+RUN apt-get update && apt-get install -y \
+    terminator \
+    gedit \
+    okular \
+    && rm -rf /var/lib/apt/lists/*
+
+# tini for subreap
+ENV TINI_VERSION v0.9.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /bin/tini
+RUN chmod +x /bin/tini
+
+RUN echo "source /opt/ros/kinetic/setup.bash" >> /root/.bashrc
+
+# prepare workspace for tm robot
+RUN cd /root && mkdir -p catkin_ws/src
+ADD techman_robot /root/catkin_ws/src/techman_robot
+ADD tm700_moveit_config /root/catkin_ws/src/tm700_moveit_config
+ADD tm900_moveit_config /root/catkin_ws/src/tm900_moveit_config
+ADD tm_description /root/catkin_ws/src/tm_description
+ADD tm_driver /root/catkin_ws/src/tm_driver
+ADD tm_gazebo /root/catkin_ws/src/tm_gazebo
+ADD tm_kinematics /root/catkin_ws/src/tm_kinematics
+ADD tm_msgs /root/catkin_ws/src/tm_msgs
+
+RUN /bin/bash -c "source /opt/ros/kinetic/setup.bash"
+
+WORKDIR /root
+ENV HOME=/root \
+    SHELL=/bin/bash
+
