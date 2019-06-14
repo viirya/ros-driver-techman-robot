@@ -19,11 +19,12 @@ This project is in development. Currently, only TM5_700 is available, there will
 
 
 ## Installation
-First set up a catkin workspace (see [this tutorials](http://wiki.ros.org/catkin/Tutorials)).  
-Then clone the repository into the src/ folder. It should look like  /path/to/your/catkin_workspace/src/techman_robot.  
-Make sure to source the correct setup file according to your workspace hierarchy, then use ```catkin_make``` to compile.  
-Note that this package depends on hardware_interface, and controller_manager.  
 
+Make a catkin workspace like:
+
+    cd && mkdir -p catkin_ws/src
+    
+Copy all packages into `catkin_ws/src`, then run `catkin_make` to build the packages. Make sure you have installed all necessary dependencies. You can also use the Docker files to quickly set up development environment.
 
 ## Usage with Moveit
 
