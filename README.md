@@ -58,9 +58,16 @@ Note that this docker image is proposed for Mac. Because GLX support of X11 on M
 
 Then connect to the Linux desktop in a browser at `http://127.0.0.1:6080/`.
 
-For Linux, x11vnc and noVNC are not necessary and can be removed.
+For Linux, x11vnc and noVNC are not necessary. There is Dockerfile for Linux:
 
-Build the ROS packages:
+
+    docker build . -f Dockerfile.linux -t ros-tm-700-linux --rm
+
+    docker run -it ros-tm-700-linux /bin/bash
+    
+To make X11 forwarding work, you should set a proper `DISPLAY` inside the docker container.     
+
+After launching docker container, build the ROS packages:
 
     source /opt/ros/kinetic/setup.bash && cd /root/catkin_ws && catkin_make
 
