@@ -19,6 +19,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
+#include <std_srvs/Empty.h>
 
 static const std::string OPENCV_WINDOW = "Image window";
 
@@ -41,7 +42,26 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "camera test");
   ros::NodeHandle nh;
 
-  // usb_cam publishes to 'image_raw' topic.
-  ros::Subscriber sub = nh.subscribe<sensor_msgs::Image>("image_raw", 1000, getImageCallback);
-  ros::spin();
+  // Service clients for usb_cam node.
+  ros::ServiceClient captureClient = nh.serviceClient<std_srvs::Empty>("start_capture");
+  ros::ServiceClient stopClient = nh.serviceClient<std_srvs::Empty>("stop_capture");
+
+  // Actually, usb_cam node does `start_capture` at beginning, automatically.
+  // But we still try to test the services here.
+  std_srvs::Empty empty;
+  if (captureClient.call(empty)) {
+    ROS_INFO("Began to capture image using usb_cam.");
+
+    // usb_cam publishes to 'image_raw' topic.
+    ros::Subscriber sub = nh.subscribe<sensor_msgs::Image>("image_raw", 1000, getImageCallback);
+    ros::spin();
+    if (stopClient.call(empty)) {
+      ROS_INFO("Stoped capture service of usb_cam.");
+    } else {
+      ROS_ERROR("Failed to stop capture service of usb_cam.");
+    }
+  } else {
+    ROS_ERROR("Failed to call capture service of usb_cam.");
+    return 1;
+  }
 }
