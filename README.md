@@ -73,3 +73,37 @@ After launching docker container, build the ROS packages:
     source /opt/ros/kinetic/setup.bash && cd /root/catkin_ws && catkin_make
 
 There might be an issue like library inconsistency, so it might need to update packages like `apt-get update`.
+
+## Built-in camera of TM5-700
+
+It it quite troublesome to use the built-in camera of TM5-700 on Mac. It is because Docker for Mac doesn't support USB device passthrough (see the related [issue](https://github.com/docker/for-mac/issues/900)). One solution is to use `docker-machine` to run docker daemon inside a Virtualbox VM. Virtualbox can expose USB devices on host computer to the running VM. There is good [article](https://dev.to/rubberduck/using-usb-with-docker-for-mac-3fdd) describing how to do that:
+
+```
+# create and start the machine
+docker-machine create -d virtualbox default
+
+# stop the vm
+docker-machine stop
+
+# you can enable USB port on the VM by doing following. But you can also set it up through Virtualbox GUI.
+vboxmanage modifyvm default --usb on
+
+# enable USB 2.0, if you installed the extension pack.
+vboxmanage modifyvm default --usbehci on
+
+# you can run this to see usb device list
+vboxmanage list usbhost
+
+# setup a usb filter so your device automatically gets connected to the Virtualbox VM. Can do this through Virtualbox GUI.
+vboxmanage usbfilter add 0 --target default --name ftdi --vendorid 0x0403 --productid 0x6015
+
+# Go ahead and start the VM back up
+docker-machine start
+
+# setup your terminal to let your docker client to use the docker daemon inside running Virtualbox VM
+eval $(docker-machine env default)
+```
+
+After above, you should run your docker container with `--privileged` flag. Using `lsusb` command should show the USB device up in the list.
+
+
