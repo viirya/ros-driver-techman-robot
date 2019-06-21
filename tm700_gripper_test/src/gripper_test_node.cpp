@@ -25,7 +25,77 @@ void getDO(TmDriver* robot, std::vector<bool>& vec) {
   robot->interface->stateRT->getDigitalOutputEE(vec);
 }
 
-void grip(TmDriver* robot) {
+/**
+ * This method closes gripper, if it is in open or hold status.
+ */
+void closeGripper(TmDriver* robot) {
+
+  std::vector<bool> vec = {false, false, false, false};
+
+  getDI(robot, vec);
+  bool gripperOpen = vec[0] == true && vec[1] == false && vec[2] == false;
+  bool gripperHold = vec[0] == false && vec[1] == false && vec[2] == true;
+  if (gripperOpen || gripperHold) {
+    // Set DO1 to off.
+    robot->setDigitalOutputEE('1', false);
+    // Set DO0 to on.
+    robot->setDigitalOutputEE('0', true);
+
+    // Read input
+    getDI(robot, vec);
+    while (1) {
+      if (vec[0] == false && vec[1] == true && vec[2] == false) {
+        print_info("Gripper is closed.");
+        break;
+      } else if (vec[0] == false && vec[1] == false && vec[2] == true) {
+        print_info("Gripper is hold when closing.");
+        break;
+      }
+      print_info("Gripper is closing...");
+      getDI(robot, vec);
+    }
+  } else {
+    print_info("Gripper is not in open or hold status. Can't close it.");
+  }
+}
+
+/**
+ * This method opens gripper, if it is in close or hold status.
+ */
+void openGripper(TmDriver* robot) {
+  std::vector<bool> vec = {false, false, false, false};
+
+  getDI(robot, vec);
+  bool gripperClosed = vec[0] == false && vec[1] == true && vec[2] == false;
+  bool gripperHold = vec[0] == false && vec[1] == false && vec[2] == true;
+  if (gripperClosed || gripperHold) {
+    // Set DO1 to off.
+    robot->setDigitalOutputEE('1', false);
+    // Set DO0 to off.
+    robot->setDigitalOutputEE('0', false);
+
+    // Read input
+    getDI(robot, vec);
+    while (1) {
+      if (vec[0] == true && vec[1] == false && vec[2] == false) {
+        print_info("Gripper is open.");
+        break;
+      } else if (vec[0] == false && vec[1] == false && vec[2] == true) {
+        print_info("Gripper is hold when opening.");
+        break;
+      }
+      print_info("Gripper is opening...");
+      getDI(robot, vec);
+    }
+  } else {
+    print_info("Gripper is not in close or hold status. Can't open it.");
+  }
+}
+
+/**
+ * This methods sets fixed position of the gripper at close direction.
+ */
+void setClosePosition(TmDriver* robot) {
   std::vector<bool> vec = {false, false, false, false};
 
   getDO(robot, vec);
@@ -57,7 +127,10 @@ void grip(TmDriver* robot) {
   }  
 }
 
-void release(TmDriver* robot) {
+/**
+ * This methods sets fixed position of the gripper at open direction.
+ */
+void setOpenPosition(TmDriver* robot) {
   std::vector<bool> vec = {false, false, false, false};
 
   getDO(robot, vec);
@@ -89,6 +162,14 @@ void release(TmDriver* robot) {
   }  
 }
 
+/**
+ * This ROS node tests CHG2 gripper on TM5-700 robotic arm. It assumes pin between CHG2 and TM5-700:
+ *   CHG2 open/close input <-> DO0
+ *   CHG2 set input <-> DO1
+ *   CHG2 open output <-> DI0
+ *   CHG2 close output <-> DI1
+ *   CHG2 hold output <-> DI2
+ */
 int main(int argc, char** argv) {
   ros::init(argc, argv, "gripper test");
   ros::NodeHandle nh;
@@ -123,10 +204,10 @@ int main(int argc, char** argv) {
     memset(cstr, 0, 512);
     fgets(cstr, 512, stdin);
 
-    if (strncmp(cstr, "grip", 4) == 0) {
-      grip(robot);
-    } else if (strncmp(cstr, "release", 7) == 0) {
-      release(robot);
+    if (strncmp(cstr, "close", 4) == 0) {
+      closeGripper(robot);
+    } else if (strncmp(cstr, "open", 4) == 0) {
+      openGripper(robot);
     } else if (strncmp(cstr, "quit", 4) == 0) {
       return 0;
     } else {

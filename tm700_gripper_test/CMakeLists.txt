@@ -122,7 +122,7 @@ include_directories(
 )
 
 ## Declare a C++ library
-# TODO: It is bad idea to use absolute path here. Because the source files are located in another
+# TODO: It is bad to use absolute path here. Because the source files are located in another
 # ROS package `tm_driver`, related paths don't work.
 add_library(tm_driver_lib
   /root/catkin_ws/src/tm_driver/src/tm_driver.cpp
