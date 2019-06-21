@@ -106,4 +106,10 @@ eval $(docker-machine env default)
 
 After above, you should run your docker container with `--privileged` flag. Using `lsusb` command should show the USB device up in the list.
 
+## CHG2 gripper with TM5-700
 
+`tm700_gripper_test` ROS package contains a ROS node used to test CHG2 gripper on TM5-700. You can launch the node like:
+
+    roslaunch tm700_gripper_test tm_gripper_test.launch  robot_ip:=<robot ip>
+
+You can input `open` and `close` commands to test gripper open and close actions.
