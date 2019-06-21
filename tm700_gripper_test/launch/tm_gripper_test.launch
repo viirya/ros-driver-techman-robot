@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+  Techman robot gripper test. Connects to the robot and set/get IO status.
+  
+  Usage:
+    tm_gripper_test.launch robot_ip:=<value>
+-->
+<launch>
+  <!-- robot_ip: IP-address of the robot's socket-messaging server -->
+  <arg name="robot_ip" />
+
+  <node name="gripper_test_node" pkg="tm700_gripper_test" type="gripper_test_node" output="screen">
+  <!-- copy the specified IP address to be consistant with ROS-Industrial spec. -->
+    <param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
+  </node>
+</launch>
