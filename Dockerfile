@@ -25,5 +25,7 @@ ADD tm_driver /root/catkin_ws/src/tm_driver
 ADD tm_gazebo /root/catkin_ws/src/tm_gazebo
 ADD tm_kinematics /root/catkin_ws/src/tm_kinematics
 ADD tm_msgs /root/catkin_ws/src/tm_msgs
+ADD tm700_camera_test /root/catkin_ws/src/tm700_camera_test
+ADD tm700_gripper_test /root/catkin_ws/src/tm700_gripper_test
 
 RUN /bin/bash -c "source /opt/ros/kinetic/setup.bash"
