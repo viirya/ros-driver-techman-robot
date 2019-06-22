@@ -58,7 +58,7 @@
   <exec_depend>cv_bridge</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
-  <exec_depend>usb_cam</exec_depend>
+  <exec_depend>ueye</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
