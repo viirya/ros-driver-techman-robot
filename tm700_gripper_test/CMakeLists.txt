@@ -122,14 +122,13 @@ include_directories(
 )
 
 ## Declare a C++ library
-# TODO: It is bad to use absolute path here. Because the source files are located in another
-# ROS package `tm_driver`, related paths don't work.
+# This package depends tm_driver package. tm_driver package should be in the same catkin workspace.
 add_library(tm_driver_lib
-  /root/catkin_ws/src/tm_driver/src/tm_driver.cpp
-  /root/catkin_ws/src/tm_driver/src/tm_communication.cpp
-  /root/catkin_ws/src/tm_driver/src/tm_hardware_interface.cpp
-  /root/catkin_ws/src/tm_driver/src/tm_robot_state_rt.cpp
-  /root/catkin_ws/src/tm_driver/src/tm_print.cpp
+  ../tm_driver/src/tm_driver.cpp
+  ../tm_driver/src/tm_communication.cpp
+  ../tm_driver/src/tm_hardware_interface.cpp
+  ../tm_driver/src/tm_robot_state_rt.cpp
+  ../tm_driver/src/tm_print.cpp
 )
 
 ## Add cmake target dependencies of the library
