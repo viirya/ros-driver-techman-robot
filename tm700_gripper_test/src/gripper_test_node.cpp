@@ -37,9 +37,9 @@ void closeGripper(TmDriver* robot) {
   bool gripperHold = vec[0] == false && vec[1] == false && vec[2] == true;
   if (gripperOpen || gripperHold) {
     // Set DO1 to off.
-    robot->setDigitalOutputEE('1', false);
+    robot->setDigitalOutputEE(1, false);
     // Set DO0 to on.
-    robot->setDigitalOutputEE('0', true);
+    robot->setDigitalOutputEE(0, true);
 
     // Read input
     getDI(robot, vec);
@@ -70,9 +70,9 @@ void openGripper(TmDriver* robot) {
   bool gripperHold = vec[0] == false && vec[1] == false && vec[2] == true;
   if (gripperClosed || gripperHold) {
     // Set DO1 to off.
-    robot->setDigitalOutputEE('1', false);
+    robot->setDigitalOutputEE(1, false);
     // Set DO0 to off.
-    robot->setDigitalOutputEE('0', false);
+    robot->setDigitalOutputEE(0, false);
 
     // Read input
     getDI(robot, vec);
@@ -103,9 +103,9 @@ void setClosePosition(TmDriver* robot) {
     print_info("Gripper is now open. Going to close it...");
 
     // Set DO1
-    robot->setDigitalOutputEE('1', true);
+    robot->setDigitalOutputEE(1, true);
     // Set DO0
-    robot->setDigitalOutputEE('0', true);
+    robot->setDigitalOutputEE(0, true);
 
     // Read input
     getDI(robot, vec);
@@ -114,7 +114,7 @@ void setClosePosition(TmDriver* robot) {
       getDI(robot, vec);
     }
 
-    robot->setDigitalOutputEE('1', false);
+    robot->setDigitalOutputEE(1, false);
 
     getDI(robot, vec);
     while (vec[1] != true && vec[2] != true) {
@@ -138,9 +138,9 @@ void setOpenPosition(TmDriver* robot) {
     print_info("Gripper is now closed. Going to open it...");
 
     // Set DO1
-    robot->setDigitalOutputEE('1', true);
+    robot->setDigitalOutputEE(1, true);
     // Set DO0
-    robot->setDigitalOutputEE('0', false);
+    robot->setDigitalOutputEE(0, false);
 
     // Read input
     getDI(robot, vec);
@@ -149,7 +149,7 @@ void setOpenPosition(TmDriver* robot) {
       getDI(robot, vec);
     }
 
-    robot->setDigitalOutputEE('1', false);
+    robot->setDigitalOutputEE(1, false);
 
     getDI(robot, vec);
     while (vec[0] != true && vec[2] != true) {
