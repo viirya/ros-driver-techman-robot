@@ -106,6 +106,8 @@ eval $(docker-machine env default)
 
 After above, you should run your docker container with `--privileged` flag. Using `lsusb` command should show the USB device up in the list.
 
+The TM5-700 model we test has built-in USB camera from IDS, the Linux driver for the camera can be found [here](https://en.ids-imaging.com/download-ueye-lin64.html). Although in Linux container the camera is shown in USB device list, and the driver toolkit also can detect the camera, the demo program fails to open the camera and capture an image. Unless we can solve this issue, we can't use the USB camera in Linux container.
+
 ## CHG2 gripper with TM5-700
 
 `tm700_gripper_test` ROS package contains a ROS node used to test CHG2 gripper on TM5-700. You can launch the node like:
