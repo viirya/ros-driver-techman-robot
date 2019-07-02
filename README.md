@@ -76,6 +76,12 @@ There might be an issue like library inconsistency, so it might need to update p
 
 ## Built-in camera of TM5-700
 
+Our TM5-700 has a built-in uEye camera.
+
+### Connect to built-in camera of TM5-700 in Linux container
+
+We can't connect to the built-in camera in Linux container. Although we can see the uEye camera in camera list of uEye's camera manager, opening the camera results failure.
+
 It it quite troublesome to use the built-in camera of TM5-700 on Mac. It is because Docker for Mac doesn't support USB device passthrough (see the related [issue](https://github.com/docker/for-mac/issues/900)). One solution is to use `docker-machine` to run docker daemon inside a Virtualbox VM. Virtualbox can expose USB devices on host computer to the running VM. There is good [article](https://dev.to/rubberduck/using-usb-with-docker-for-mac-3fdd) describing how to do that:
 
 ```
@@ -107,6 +113,40 @@ eval $(docker-machine env default)
 After above, you should run your docker container with `--privileged` flag. Using `lsusb` command should show the USB device up in the list.
 
 The TM5-700 model we test has built-in USB camera from IDS, the Linux driver for the camera can be found [here](https://en.ids-imaging.com/download-ueye-lin64.html). Although in Linux container the camera is shown in USB device list, and the driver toolkit also can detect the camera, the demo program fails to open the camera and capture an image. Unless we can solve this issue, we can't use the USB camera in Linux container.
+
+### Use built-in camera on Linux machine
+
+We tried with two ROS package for uEye camera: [ueye](http://wiki.ros.org/ueye) and [ueye_cam](http://wiki.ros.org/ueye_cam). Not sure if `ueye` was built with too old uEye library, running the node from `ueye` causes segmentation fault on Ubuntu 16.04.
+
+`ueye_cam` is ok to use, although it isn't workable out-of-box. For the camera on our TM5-700, we need to set
+
+```
+ <param name="image_width" type="int" value="1280" />
+ <param name="image_height" type="int" value="720" />
+ <param name="image_top" type="int" value="0" /> <!-- -1: center -->
+ <param name="image_left" type="int" value="0" /> <!-- -1: center -->
+```
+
+And set the color mode to `bayer_rggb8`:
+
+```
+<param name="color_mode" type="str" value="bayer_rggb8" />
+```
+
+in launch file, e.g, `debug.launch`, to make `ueye_cam` work normally.
+
+After setting that, remember to save camera parameter into file using uEye's ueye demo tool. The parameter file location is `~/.ros/camera_conf/<camera_name>.ini` by default. Please see `ueye_cam` document for more parameters.
+
+To launch ROS node of `ueye_cam`:
+
+```
+roslaunch ueye_cam debug.launch  # for debugging
+```
+
+Then, using `rostopic list`, you should see a topic `/camera/image_raw` that `ueye_cam` node publishes image data to.
+
+You can use `tm700_camera_test` node in this repo to test it. Run `roslaunch tm700_camera_test tm_camera_test.launch`. The node will subscribe `camera/image_raw` topic and show captured images in a window.
+
 
 ## CHG2 gripper with TM5-700
 
