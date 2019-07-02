@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+  Techman robot camera test.
+
+  Usage:
+    tm_camera_test.launch
+-->
+<launch>
+  <node name="camera_test_node" pkg="tm700_camera_test" type="camera_test_node" output="screen">
+  </node>
+</launch>
