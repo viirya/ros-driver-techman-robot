@@ -45,10 +45,10 @@ int main(int argc, char** argv) {
   ROS_INFO("Going to capture image using uEye usb camera.");
 
   ros::Rate loop_rate(10);
-  while (ros::ok()) {
-    // ueye package publishes to 'image_raw' topic.
-    ros::Subscriber sub = nh.subscribe<sensor_msgs::Image>("image_raw", 1000, getImageCallback);
+  // ueye package publishes to 'image_raw' topic.
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::Image>("image_raw", 1000, getImageCallback);
 
+  while (ros::ok()) {
     ros::spinOnce();
     loop_rate.sleep();
   }
