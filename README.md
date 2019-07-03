@@ -4,11 +4,9 @@ A driver provides ROS support for techman robots. TM5_700 is available for ROS K
 
 This is originally forked from [techman_robot](https://github.com/kentsai0319/techman_robot). Because looks like that repo isn't actively maintained, this repo copies that repo and does some development here.
 
-> __NOTE__:  
-This project is in development. Currently, only TM5_700 is available, there will be TM5_900 and TM10_1300 in the future. Note that we will use "tm700" to represent TM5_700 in this package.  
-
-
 ## Overview
+
+### ROS interfaces
 
 * Action interface on */joint\_trajectory\_action* for integration with __MoveIt__
 * Publishes robot joint state on */joint\_states*
@@ -17,6 +15,12 @@ This project is in development. Currently, only TM5_700 is available, there will
 * Publishes TCP force on */wrench*
 * Service call to set outputs on */tm\_driver/set\_io*
 
+### Packages
+
+* tm_driver: ROS node for driving the robotic arm. This publishes robot information to topics as above.
+* tm_description: The urdf files for robotics. 
+* tm700_camera_test: A ROS node used for testing built-in camera.
+* tm700_gripper_test: A ROS node used for testing CHG2 gripper attached to robotic arm.
 
 ## Installation
 
@@ -28,12 +32,12 @@ Copy all packages into `catkin_ws/src`, then run `catkin_make` to build the pack
 
 ## Usage with Moveit
 
-### test in simulation:
+### Test in simulation:
 
 To bring up moveit environment in simulation mode, run:  
 ```roslaunch tm700_moveit_config tm700_moveit_planning_execution.launch```
 
-### run with real robot:
+### Run with real robot:
 
 For TM5-700 as an example, the robotic arm runs Windows OS. By default, it enables DHCP to obtain IP automatically. You can either use the dynamic IP, or set up a static Intranet IP like 192.168.x.x on the robot. Make sure you can ping the robot at the IP.
 
@@ -47,7 +51,7 @@ To bring up the simulated robot in Gazebo, run:
 ```roslaunch tm_gazebo tm700.launch```
 
 
-## Docker
+## Development environment in Docker
 
 Build a docker image to test the robot:
 
