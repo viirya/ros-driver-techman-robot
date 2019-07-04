@@ -3,9 +3,13 @@
   Techman robot camera test.
 
   Usage:
-    tm_camera_test.launch
+    tm_camera_test.launch image_topic:=<value>
 -->
 <launch>
+  <!-- image_topic: ROS topic name where image data is published to -->
+  <arg name="image_topic" />
+  
   <node name="camera_test_node" pkg="tm700_camera_test" type="camera_test_node" output="screen">
+    <param name="image_topic" type="str" value="$(arg image_topic)" />
   </node>
 </launch>
