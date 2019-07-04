@@ -166,7 +166,7 @@ message(STATUS "libraries: ${OpenCV_LIBRARIES}")
 message(STATUS "include path: ${OpenCV_INCLUDE_DIRS}")
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(use_camera_test_node
+target_link_libraries(usb_camera_test_node
    ${catkin_LIBRARIES}
    ${OpenCV_LIBRARIES}
 )
