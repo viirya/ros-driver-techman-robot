@@ -41,12 +41,21 @@ void getImageCallback(const sensor_msgs::ImageConstPtr& msg) {
 int main(int argc, char** argv) {
   ros::init(argc, argv, "camera test");
   ros::NodeHandle nh;
+  
+  std::string imageTopic;
+  // Get image topic ROS parameter
+  if (!(ros::param::get("~image_topic", host))) {
+    if (argc > 1) {
+      imageTopic = argv[1];
+    } else {
+      exit(1);
+    }
+  }
 
-  ROS_INFO("Going to capture image using uEye usb camera.");
+  ROS_INFO("Going to capture image from ROS topic: %s", imageTopic.c_str());
 
   ros::Rate loop_rate(10);
-  // ueye package publishes to 'image_raw' topic.
-  ros::Subscriber sub = nh.subscribe<sensor_msgs::Image>("image_raw", 1000, getImageCallback);
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::Image>(imageTopic.c_str(), 1000, getImageCallback);
 
   while (ros::ok()) {
     ros::spinOnce();
