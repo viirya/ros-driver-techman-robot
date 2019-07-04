@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
   
   std::string imageTopic;
   // Get image topic ROS parameter
-  if (!(ros::param::get("~image_topic", host))) {
+  if (!(ros::param::get("~image_topic", imageTopic))) {
     if (argc > 1) {
       imageTopic = argv[1];
     } else {
