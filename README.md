@@ -149,7 +149,7 @@ roslaunch ueye_cam debug.launch  # for debugging
 
 Then, using `rostopic list`, you should see a topic `/camera/image_raw` that `ueye_cam` node publishes image data to.
 
-You can use `tm700_camera_test` node in this repo to test it. Run `roslaunch tm700_camera_test tm_camera_test.launch`. The node will subscribe `camera/image_raw` topic and show captured images in a window.
+You can use `tm700_camera_test` node in this repo to test it. Run `roslaunch tm700_camera_test tm_camera_test.launch image_topic:=<value>`. The node will subscribe the given topic and show captured images in a window. `ueye_cam` publishes to `camera/image_raw` topic by default.
 
 
 ## CHG2 gripper with TM5-700
