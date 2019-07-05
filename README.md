@@ -51,6 +51,11 @@ To bring up the simulated robot in Gazebo, run:
 ```roslaunch tm_gazebo tm700.launch```
 
 
+To run simulated robot in Gazebo and control it through MoveIt, run:
+
+    roslaunch tm_gazebo tm700_gazebo_moveit.launch
+
+
 ## Development environment in Docker
 
 Build a docker image to test the robot:
