@@ -57,7 +57,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     ros-kinetic-moveit ros-kinetic-gazebo-dev ros-kinetic-gazebo-msgs ros-kinetic-gazebo-plugins ros-kinetic-ros-controllers \
-    ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-pkgs ros-kinetic-industrial-robot-simulator \
+    ros-kinetic-gazebo-ros ros-kinetic-gazebo-ros-control ros-kinetic-gazebo-ros-pkgs ros-kinetic-industrial-robot-simulator \
     && rm -rf /var/lib/apt/lists/*
 
 # =================================
