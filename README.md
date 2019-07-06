@@ -58,6 +58,8 @@ To run simulated robot in Gazebo and control it through MoveIt, run:
     roslaunch tm_gazebo tm700_gazebo_moveit.launch
 
 
+Note that making sure to have `ros-kinetic-gazebo-ros-control` installed that is required for integratio between Gazebo and MoveIt. Gazebo and Rviz will be launched if the package isn't installed, but you can't control the robot in Gazebo through MoveIt.
+
 ## Development environment in Docker
 
 Build a docker image to test the robot:
