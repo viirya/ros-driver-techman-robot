@@ -47,8 +47,10 @@ To bring up moveit environment and connect to real robot, run:
 ```roslaunch tm700_moveit_config tm700_moveit_planning_execution.launch sim:=False robot_ip:=<robot ip>```
 
 ## Usage with Gazebo
-To bring up the simulated robot in Gazebo, run:  
-```roslaunch tm_gazebo tm700.launch```
+
+To bring up the simulated robot in Gazebo, run:
+
+    roslaunch tm_gazebo tm700.launch
 
 
 To run simulated robot in Gazebo and control it through MoveIt, run:
