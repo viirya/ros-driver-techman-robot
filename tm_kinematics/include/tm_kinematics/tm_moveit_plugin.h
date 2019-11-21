@@ -122,7 +122,7 @@
 #include <moveit/kdl_kinematics_plugin/joint_mimic.hpp>
 
 // MoveIt!
-#include <moveit/kinematics_base/kinematics_base.h>
+#include <moveit/kinematics_base/kinematics_base.h> 
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 
@@ -182,10 +182,10 @@ namespace tm_kinematics
                                const std::vector<double> &joint_angles,
                                std::vector<geometry_msgs::Pose> &poses) const;
 
-    virtual bool initialize(const std::string &robot_description,
+    virtual bool initialize(const moveit::core::RobotModel& robot_model,
                             const std::string &group_name,
                             const std::string &base_name,
-                            const std::string &tip_name,
+                            const std::vector<std::string>& tip_frames,
                             double search_discretization);
 
     /**
