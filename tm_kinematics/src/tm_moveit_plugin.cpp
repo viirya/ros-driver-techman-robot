@@ -217,16 +217,7 @@ bool TMKinematicsPlugin::initialize(const moveit::core::RobotModel& robot_model,
   setValues(robot_model.getName(), group_name, base_frame, tip_frames, search_discretization);
 
   ros::NodeHandle private_handle("~");
-  // const boost::shared_ptr<srdf::Model> &srdf = robot_model.getSRDF();
   const urdf::ModelInterfaceSharedPtr& urdf_model = robot_model.getURDF();
-
-  // if (!urdf_model || !srdf)
-  // {
-  //   ROS_ERROR_NAMED("kdl","URDF and SRDF must be loaded for KDL kinematics solver to work.");
-  //   return false;
-  // }
-
-  // robot_model_.reset(robot_model);
 
   robot_model::JointModelGroup* joint_model_group = robot_model_->getJointModelGroup(group_name);
   if (!joint_model_group)
