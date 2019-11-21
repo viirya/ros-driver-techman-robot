@@ -1,6 +1,26 @@
 /*********************************************************************
  * tm_moveit_plugin.h
  *
+ * Copyright 2019 Copyright 2019 Techman Robot Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *********************************************************************
+ * 
+ * Author: Julian van Dijk
+ */
+/*********************************************************************
+ * tm_moveit_plugin.h
+ *
  * Copyright 2016 Copyright 2016 Techman Robot Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -117,12 +137,12 @@
 #include <kdl/chainiksolvervel_pinv.hpp>
 #include <kdl/chainiksolverpos_nr_jl.hpp>
 #include <kdl/chainfksolverpos_recursive.hpp>
-#include <moveit/kdl_kinematics_plugin/chainiksolver_pos_nr_jl_mimic.hpp>
-#include <moveit/kdl_kinematics_plugin/chainiksolver_vel_pinv_mimic.hpp>
+#include <moveit/kdl_kinematics_plugin/chainiksolver_vel_mimic_svd.hpp>
+#include <moveit/kdl_kinematics_plugin/kdl_kinematics_plugin.h>
 #include <moveit/kdl_kinematics_plugin/joint_mimic.hpp>
 
 // MoveIt!
-#include <moveit/kinematics_base/kinematics_base.h>
+#include <moveit/kinematics_base/kinematics_base.h> 
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 
@@ -182,10 +202,10 @@ namespace tm_kinematics
                                const std::vector<double> &joint_angles,
                                std::vector<geometry_msgs::Pose> &poses) const;
 
-    virtual bool initialize(const std::string &robot_description,
+    virtual bool initialize(const moveit::core::RobotModel& robot_model,
                             const std::string &group_name,
                             const std::string &base_name,
-                            const std::string &tip_name,
+                            const std::vector<std::string>& tip_frames,
                             double search_discretization);
 
     /**

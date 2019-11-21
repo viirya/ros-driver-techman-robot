@@ -1,6 +1,26 @@
 /*********************************************************************
  * tm_moveit_plugin.cpp
  *
+ * Copyright 2019 Copyright 2019 Techman Robot Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *********************************************************************
+ * 
+ * Author: Julian van Dijk
+ */
+/*********************************************************************
+ * tm_moveit_plugin.cpp
+ *
  * Copyright 2016 Copyright 2016 Techman Robot Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -95,7 +115,7 @@
 
 /* Author: Sachin Chitta, David Lu!!, Ugo Cupcic */
 
-#include <class_loader/class_loader.h>
+#include <class_loader/class_loader.hpp>
 
 //#include <tf/transform_datatypes.h>
 #include <tf_conversions/tf_kdl.h>
@@ -113,7 +133,6 @@
 
 //register KDLKinematics as a KinematicsBase implementation
 CLASS_LOADER_REGISTER_CLASS(tm_kinematics::TMKinematicsPlugin, kinematics::KinematicsBase)
-
 namespace tm_kinematics
 {
 
@@ -188,26 +207,17 @@ bool TMKinematicsPlugin::checkConsistency(const KDL::JntArray& seed_state,
   return true;
 }
 
-bool TMKinematicsPlugin::initialize(const std::string &robot_description,
+bool TMKinematicsPlugin::initialize(const moveit::core::RobotModel& robot_model,
                                      const std::string& group_name,
                                      const std::string& base_frame,
-                                     const std::string& tip_frame,
+                                     const std::vector<std::string>& tip_frames,
+                                    //  const std::string& tip_frame,
                                      double search_discretization)
 {
-  setValues(robot_description, group_name, base_frame, tip_frame, search_discretization);
+  setValues(robot_model.getName(), group_name, base_frame, tip_frames, search_discretization);
 
   ros::NodeHandle private_handle("~");
-  rdf_loader::RDFLoader rdf_loader(robot_description_);
-  const boost::shared_ptr<srdf::Model> &srdf = rdf_loader.getSRDF();
-  const boost::shared_ptr<urdf::ModelInterface>& urdf_model = rdf_loader.getURDF();
-
-  if (!urdf_model || !srdf)
-  {
-    ROS_ERROR_NAMED("kdl","URDF and SRDF must be loaded for KDL kinematics solver to work.");
-    return false;
-  }
-
-  robot_model_.reset(new robot_model::RobotModel(urdf_model, srdf));
+  const urdf::ModelInterfaceSharedPtr& urdf_model = robot_model.getURDF();
 
   robot_model::JointModelGroup* joint_model_group = robot_model_->getJointModelGroup(group_name);
   if (!joint_model_group)
