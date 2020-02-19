@@ -13,7 +13,6 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES tm700_kin tm900_kin tm700_moveit_plugin tm900_moveit_plugin tm1100_kin tm1300_kin tm1100_moveit_plugin tm1300_moveit_plugin
   CATKIN_DEPENDS roscpp geometry_msgs moveit_core moveit_ros_planning pluginlib tf_conversions
-  DEPENDS boost
 )
 
 
@@ -21,7 +20,6 @@ catkin_package(
 ## Build ##
 ###########
 
-include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(tm700_kin src/tm_kin.cpp)
