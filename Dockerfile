@@ -20,6 +20,7 @@ RUN cd /root && mkdir -p catkin_ws/src
 ADD techman_robot /root/catkin_ws/src/techman_robot
 ADD tm700_moveit_config /root/catkin_ws/src/tm700_moveit_config
 ADD tm900_moveit_config /root/catkin_ws/src/tm900_moveit_config
+ADD tm1300_moveit_config /root/catkin_ws/src/tm1300_moveit_config
 ADD tm_description /root/catkin_ws/src/tm_description
 ADD tm_driver /root/catkin_ws/src/tm_driver
 ADD tm_gazebo /root/catkin_ws/src/tm_gazebo
