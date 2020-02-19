@@ -314,8 +314,8 @@
     <link name="${prefix}base"/>
     <joint name="${prefix}base-base_link" type="fixed">
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <parent link="${prefix}base"/>
-      <child link="${prefix}base_link"/>
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}base"/>
     </joint>
     
     <!-- Frame coincident with all-zeros TCP on TM controller -->
